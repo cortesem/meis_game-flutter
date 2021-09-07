@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// Main App Page
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
@@ -31,8 +32,8 @@ class _HomeViewState extends State<HomeView> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => PageView()));
+            Navigator.of(context).push(_createRoute());
+            // context, MaterialPageRoute(builder: (context) => PageView()));
           },
           // child: Image(image: AssetImage('lib/assets/card_back01.png'))),
           child: const Text('meow'),
@@ -42,8 +43,30 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
+
+  // Transition from HomeView to ABC card page (PageView)
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => PageView(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        var curve = Curves.fastOutSlowIn;
+
+        final tween = Tween(begin: begin, end: end);
+        final curvedAnimation =
+            CurvedAnimation(parent: animation, curve: curve);
+
+        return SlideTransition(
+          position: tween.animate(curvedAnimation),
+          child: child,
+        );
+      },
+    );
+  }
 }
 
+// Flash Card Page, temp name..
 class PageView extends StatefulWidget {
   @override
   _PageViewState createState() => _PageViewState();
