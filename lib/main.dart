@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 import 'cards/flash_cards.dart';
 
 void main() => runApp(MyApp());
@@ -14,7 +15,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
+//
 // Main App Page
+//
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
@@ -67,7 +70,9 @@ class _HomeViewState extends State<HomeView> {
   }
 }
 
+//
 // Flash Card Page, temp name..
+//
 class PageView extends StatefulWidget {
   @override
   _PageViewState createState() => _PageViewState();
@@ -79,26 +84,124 @@ class _PageViewState extends State<PageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: GestureDetector(
-            // onTap: () {
-            //   setState(() {
-            //     deck.next();
-            //   });
-            // },
-            // swipe cards
-            onHorizontalDragEnd: (details) {
-              setState(() {
-                if (details.primaryVelocity == null) return;
-                if (details.primaryVelocity! > 0) {
-                  deck.prev();
-                }
-                if (details.primaryVelocity! < 0) {
-                  deck.next();
-                }
-              });
-            },
-            child: deck.top().show()),
+      body: DraggableFlashCard(child: deck.top().show()),
+      // Center(
+      //   child: GestureDetector(
+      //       // onTap: () {
+      //       //   setState(() {
+      //       //     deck.next();
+      //       //   });
+      //       // },
+      //       // swipe cards
+      //       onHorizontalDragEnd: (details) {
+      //         setState(() {
+      //           if (details.primaryVelocity == null) return;
+      //           if (details.primaryVelocity! > 0) {
+      //             deck.prev();
+      //           }
+      //           if (details.primaryVelocity! < 0) {
+      //             deck.next();
+      //           }
+      //         });
+      //       },
+      //       child: DraggableFlashCard(child: deck.top().show())),
+      // ),
+    );
+  }
+}
+
+//
+// Draggable flash card
+//
+class DraggableFlashCard extends StatefulWidget {
+  const DraggableFlashCard({required this.child, Key? key}) : super(key: key);
+
+  final Widget child;
+
+  @override
+  _DraggableFlashCardState createState() => _DraggableFlashCardState();
+}
+
+class _DraggableFlashCardState extends State<DraggableFlashCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  /// The alignment of the card as it is dragged or being animated.
+  ///
+  /// While the card is being dragged, this value is set to the values computed
+  /// in the GestureDetector onPanUpdate callback. If the animation is running,
+  /// this value is set to the value of the [_animation].
+  Alignment _dragAlignment = Alignment.center;
+
+  late Animation<Alignment> _animation;
+
+  /// Calculates and runs a [SpringSimulation].
+  void _runAnimation(Offset pixelsPerSecond, Size size) {
+    _animation = _controller.drive(
+      AlignmentTween(
+        begin: _dragAlignment,
+        end: Alignment.center,
+      ),
+    );
+    // Calculate the velocity relative to the unit interval, [0,1],
+    // used by the animation controller.
+    final unitsPerSecondX = pixelsPerSecond.dx / size.width;
+    final unitsPerSecondY = pixelsPerSecond.dy / size.height;
+    final unitsPerSecond = Offset(unitsPerSecondX, unitsPerSecondY);
+    final unitVelocity = unitsPerSecond.distance;
+
+    const spring = SpringDescription(
+      mass: 30,
+      stiffness: 1,
+      damping: 1,
+    );
+
+    final simulation = SpringSimulation(spring, 0, 1, -unitVelocity);
+
+    _controller.animateWith(simulation);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this);
+
+    _controller.addListener(() {
+      setState(() {
+        _dragAlignment = _animation.value;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return GestureDetector(
+      onPanDown: (details) {
+        _controller.stop();
+      },
+      onPanUpdate: (details) {
+        setState(() {
+          _dragAlignment += Alignment(
+            details.delta.dx / (size.width / 2),
+            details.delta.dy / (size.height / 2),
+          );
+        });
+      },
+      onPanEnd: (details) {
+        _runAnimation(details.velocity.pixelsPerSecond, size);
+      },
+      child: Align(
+        alignment: _dragAlignment,
+        child: Card(
+          child: widget.child,
+        ),
       ),
     );
   }
