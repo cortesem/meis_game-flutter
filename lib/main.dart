@@ -32,6 +32,7 @@ class _HomeViewState extends State<HomeView> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
+            // Animated route
             Navigator.of(context).push(_createRoute());
             // context, MaterialPageRoute(builder: (context) => PageView()));
           },
@@ -85,6 +86,7 @@ class _PageViewState extends State<PageView> {
             //     deck.next();
             //   });
             // },
+            // swipe cards
             onHorizontalDragEnd: (details) {
               setState(() {
                 if (details.primaryVelocity == null) return;

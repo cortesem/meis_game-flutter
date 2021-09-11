@@ -30,12 +30,39 @@ class CardDeck {
 
   CardDeck() {
     deck = [
-      FlashCard(Image(image: AssetImage('lib/assets/card_back01.png')),
-          Image(image: AssetImage('lib/assets/letter_a.png'))),
-      FlashCard(Image(image: AssetImage('lib/assets/card_back01.png')),
-          Image(image: AssetImage('lib/assets/letter_b.png'))),
-      FlashCard(Image(image: AssetImage('lib/assets/card_back01.png')),
-          Image(image: AssetImage('lib/assets/letter_c.png')))
+      FlashCard(
+          Image(
+            image: AssetImage('lib/assets/card_back01.png'),
+            fit: BoxFit.cover,
+            width: double.infinity,
+          ),
+          Image(
+            image: AssetImage('lib/assets/letter_a.png'),
+            fit: BoxFit.fill,
+            width: double.infinity,
+          )),
+      FlashCard(
+          Image(
+            image: AssetImage('lib/assets/card_back01.png'),
+            fit: BoxFit.fill,
+            width: double.infinity,
+          ),
+          Image(
+            image: AssetImage('lib/assets/letter_b.png'),
+            fit: BoxFit.fill,
+            width: double.infinity,
+          )),
+      FlashCard(
+          Image(
+            image: AssetImage('lib/assets/card_back01.png'),
+            fit: BoxFit.fill,
+            width: double.infinity,
+          ),
+          Image(
+            image: AssetImage('lib/assets/letter_c.png'),
+            fit: BoxFit.fill,
+            width: double.infinity,
+          ))
     ];
     this.topInd = 0;
     // this.nextInd = 1;
