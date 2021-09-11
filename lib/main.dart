@@ -84,28 +84,40 @@ class _PageViewState extends State<PageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DraggableFlashCard(child: deck.top().show()),
-      // Center(
-      //   child: GestureDetector(
-      //       // onTap: () {
-      //       //   setState(() {
-      //       //     deck.next();
-      //       //   });
-      //       // },
-      //       // swipe cards
-      //       onHorizontalDragEnd: (details) {
-      //         setState(() {
-      //           if (details.primaryVelocity == null) return;
-      //           if (details.primaryVelocity! > 0) {
-      //             deck.prev();
-      //           }
-      //           if (details.primaryVelocity! < 0) {
-      //             deck.next();
-      //           }
-      //         });
-      //       },
-      //       child: DraggableFlashCard(child: deck.top().show())),
-      // ),
+      // create a stack of dismissables or a circular list
+      body: GestureDetector(
+          // Use tap to switch cards untill I figure out how make swiping work with draggable
+          onTap: () {
+            // Eventually make an animation here to dismiss the card
+            setState(() {
+              deck.next();
+            });
+          },
+          // swipe cards
+          // onHorizontalDragEnd: (details) {
+          //   setState(() {
+          //     if (details.primaryVelocity == null) return;
+          //     if (details.primaryVelocity! > 0) {
+          //       deck.prev();
+          //     }
+          //     if (details.primaryVelocity! < 0) {
+          //       deck.next();
+          //     }
+          //   });
+          // },
+          // onVerticalDragEnd: (details) {},
+          child: Stack(
+            children: <Widget>[
+              DraggableFlashCard(
+                child: deck.next().show(),
+                key: UniqueKey(),
+              ),
+              DraggableFlashCard(
+                child: deck.prev().show(),
+                key: UniqueKey(),
+              ),
+            ],
+          )), //DraggableFlashCard(child: deck.top().show())),
     );
   }
 }

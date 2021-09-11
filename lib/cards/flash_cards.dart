@@ -31,7 +31,7 @@ class CardDeck {
   CardDeck() {
     Image cardBack = Image.asset(
       'lib/assets/card_back01.png',
-      // fit: BoxFit.cover,
+      // fit: BoxFit.fill,
       // width: double.infinity,
     );
 
@@ -64,8 +64,7 @@ class CardDeck {
   }
 
   FlashCard top() {
-    FlashCard c = deck.elementAt(topInd);
-    return c;
+    return deck.elementAt(topInd);
   }
 
   FlashCard next() {
