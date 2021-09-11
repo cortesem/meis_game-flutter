@@ -29,13 +29,34 @@ class CardDeck {
   late int prevInd;
 
   CardDeck() {
+    Image cardBack = Image.asset(
+      'lib/assets/card_back01.png',
+      // fit: BoxFit.fill,
+      // width: double.infinity,
+    );
+
     deck = [
-      FlashCard(Image(image: AssetImage('lib/assets/card_back01.png')),
-          Image(image: AssetImage('lib/assets/letter_a.png'))),
-      FlashCard(Image(image: AssetImage('lib/assets/card_back01.png')),
-          Image(image: AssetImage('lib/assets/letter_b.png'))),
-      FlashCard(Image(image: AssetImage('lib/assets/card_back01.png')),
-          Image(image: AssetImage('lib/assets/letter_c.png')))
+      FlashCard(
+          cardBack,
+          Image(
+            image: AssetImage('lib/assets/letter_a.png'),
+            // fit: BoxFit.fill,
+            // width: double.infinity,
+          )),
+      FlashCard(
+          cardBack,
+          Image(
+            image: AssetImage('lib/assets/letter_b.png'),
+            // fit: BoxFit.fill,
+            // width: double.infinity,
+          )),
+      FlashCard(
+          cardBack,
+          Image(
+            image: AssetImage('lib/assets/letter_c.png'),
+            // fit: BoxFit.fill,
+            // width: double.infinity,
+          )),
     ];
     this.topInd = 0;
     // this.nextInd = 1;
@@ -43,8 +64,7 @@ class CardDeck {
   }
 
   FlashCard top() {
-    FlashCard c = deck.elementAt(topInd);
-    return c;
+    return deck.elementAt(topInd);
   }
 
   FlashCard next() {
