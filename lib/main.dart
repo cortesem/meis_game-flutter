@@ -84,40 +84,30 @@ class _PageViewState extends State<PageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // create a stack of dismissables or a circular list
-      body: GestureDetector(
-          // Use tap to switch cards untill I figure out how make swiping work with draggable
-          onTap: () {
-            // Eventually make an animation here to dismiss the card
-            setState(() {
-              deck.next();
-            });
-          },
-          // swipe cards
-          // onHorizontalDragEnd: (details) {
-          //   setState(() {
-          //     if (details.primaryVelocity == null) return;
-          //     if (details.primaryVelocity! > 0) {
-          //       deck.prev();
-          //     }
-          //     if (details.primaryVelocity! < 0) {
-          //       deck.next();
-          //     }
-          //   });
-          // },
-          // onVerticalDragEnd: (details) {},
-          child: Stack(
-            children: <Widget>[
-              DraggableFlashCard(
-                child: deck.next().show(),
-                key: UniqueKey(),
-              ),
-              DraggableFlashCard(
-                child: deck.prev().show(),
-                key: UniqueKey(),
-              ),
-            ],
-          )), //DraggableFlashCard(child: deck.top().show())),
+      // This is a little buggy due to having both draggable and dismissible at the same time,
+      // however the behaviour is generally good.
+      body: Stack(
+        children: <Widget>[
+          // Bottom Card
+          DraggableFlashCard(
+            child: deck.next().show(),
+          ),
+          // Top card -> dismissible
+          Dismissible(
+            key: UniqueKey(),
+            // movementDuration: Duration(seconds: 1),
+            onDismissed: (direction) {
+              setState(() {
+                deck.next();
+              });
+            },
+            child: DraggableFlashCard(
+              child: deck.prev().show(),
+              key: UniqueKey(),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
