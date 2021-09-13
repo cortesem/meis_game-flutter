@@ -22,7 +22,6 @@ class FlashCard {
 }
 
 // Represents the deck of flash cards.. ABC's for now
-// Hard Coding stuff for now, fix later
 class CardDeck {
   List<FlashCard> deck = [];
   late int topInd;
@@ -48,7 +47,7 @@ class CardDeck {
 
     // // Get the directory of the project, and append the assets folder to it.
     // String currentDir = Directory.current.toString();
-    // // Directory.toString appends the text "Directory = '...'" before the path.
+    // // Directory.toString appends the text "Directory = '...'" around the path.
     // currentDir = currentDir.substring(12, currentDir.length - 1);
     // Directory dir = Directory(currentDir + '/' + assetsPath);
 
@@ -59,9 +58,11 @@ class CardDeck {
     // for (FileSystemEntity file in files) {
     //   FileStat f = file.statSync();
 
-    //   String fileName = file.absolute.toString();
+    //
+    //   String fileName = file.absolute.toString();  // appends lots of junk around the path
     //   fileName = fileName.split('/').last;
     //   if (fileName.contains('letter_')) {
+    //     // Remove the ' at the end of the fileName..
     //     fileName = fileName.substring(0, fileName.length - 1);
     //     deck.add(FlashCard(
     //         cardBack,
@@ -72,7 +73,34 @@ class CardDeck {
     // }
 
     // This works until I can fix the above for android
-    List<String> suffix = ["a", "b", "c"];
+    List<String> suffix = [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h",
+      "i",
+      "j",
+      "k",
+      "l",
+      "m",
+      "n",
+      "o",
+      "p",
+      "q",
+      "r",
+      "s",
+      "t",
+      "u",
+      "v",
+      "w",
+      "x",
+      "y",
+      "z"
+    ];
 
     for (String letter in suffix) {
       deck.add(FlashCard(
