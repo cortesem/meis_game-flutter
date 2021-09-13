@@ -6,7 +6,7 @@ A small flash card game for my daughter Mei.
 
 ## About
 
-Since all the phone apps geared for babies are littered with ad's and/or cost an excessive amount of money, I decided to put together a simple app to let my daughter swipe through flash cards (and possibly photos).
+Since all of the phone apps geared for babies are littered with ad's and/or cost an excessive amount of money, I decided to put together a simple app to let my daughter swipe through flash cards (and possibly photos).
 
 ## Status
 
