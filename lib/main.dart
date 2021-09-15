@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
-import 'cards/flash_cards.dart';
+import 'flash_cards.dart';
 
 void main() => runApp(MyApp());
 
@@ -29,20 +29,19 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
         title: Center(child: const Text('Mei\'s Game')),
       ),
       body: Center(
-        child: ElevatedButton(
+        child: TextButton(
           onPressed: () {
             // Animated route
             Navigator.of(context).push(_createRoute());
-            // context, MaterialPageRoute(builder: (context) => PageView()));
           },
-          // child: Image(image: AssetImage('lib/assets/card_back01.png'))),
-          child: const Text('meow'),
-          style: ElevatedButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20.0)),
+          child: Image(
+            image: AssetImage('lib/assets/a-z_icon.png'),
+          ),
         ),
       ),
     );
@@ -84,6 +83,7 @@ class _PageViewState extends State<PageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey[900],
       // This is a little buggy due to having both draggable and dismissible at the same time,
       // however the behaviour is generally good.
       body: Stack(
@@ -91,11 +91,13 @@ class _PageViewState extends State<PageView> {
           // Bottom Card
           DraggableFlashCard(
             child: deck.next().show(),
+            // This fixes the card swapping bug, but does not fix the underlying issue
+            // key: UniqueKey(),
           ),
           // Top card -> dismissible
           Dismissible(
             key: UniqueKey(),
-            // movementDuration: Duration(seconds: 1),
+            // movementDuration: Duration(milliseconds: 100),
             onDismissed: (direction) {
               setState(() {
                 deck.next();
